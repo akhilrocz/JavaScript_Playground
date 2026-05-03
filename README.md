@@ -1,4 +1,4 @@
-🚀 JSPlayground
+🚀 JS Playground
 A lightweight, browser-based JavaScript code runner and playground. This project allows you to execute JavaScript snippets in a controlled environment, capture console output, and measure execution performance in real-time.
 
 ✨ Features
@@ -48,5 +48,6 @@ console.log("User Data:", user);
 const start = Date.now();
 // Simulated logic
 console.warn("System check complete.");
+
 📝 License
 This project is open-source and available under the MIT License.
