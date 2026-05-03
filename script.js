@@ -77,6 +77,7 @@ const output = document.getElementById("output");
 const runBtn = document.getElementById("run-btn");
 const clearBtn = document.getElementById("clear-btn");
 const codeInput = document.getElementById("code-input");
+const copyBtn = document.getElementById("copy-btn");
 
 const jsPlayground = new JSPlayground(output);
 
@@ -86,6 +87,19 @@ runBtn.addEventListener("click",()=>{
 
 clearBtn.addEventListener("click",()=>{
     jsPlayground.clear();
+})
+
+copyBtn.addEventListener("click",()=>{
+    navigator.clipboard.writeText(codeInput.value).then(()=>{
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = "Copied!";
+        copyBtn.classList.add("success");
+
+        setTimeout(()=>{
+            copyBtn.textContent=originalText;
+            copyBtn.classList.remove("success");
+        },2000);
+    })
 })
 
 codeInput.value =`
