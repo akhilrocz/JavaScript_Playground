@@ -83,12 +83,11 @@ const clearBtn = document.getElementById("clear-btn");
 const codeInput = document.getElementById("code-input");
 const copyBtn = document.getElementById("copy-btn");
 const formatBtn = document.getElementById("format-btn");
-const codeInputValue = codeInput.value;
 
 const jsPlayground = new JSPlayground(output);
 
 runBtn.addEventListener("click", () => {
-  jsPlayground.run(codeInputValue);
+  jsPlayground.run(codeInput.value);
 });
 
 clearBtn.addEventListener("click", () => {
@@ -96,7 +95,7 @@ clearBtn.addEventListener("click", () => {
 });
 
 copyBtn.addEventListener("click", () => {
-  navigator.clipboard.writeText(codeInputValue).then(() => {
+  navigator.clipboard.writeText(codeInput.value).then(() => {
     const originalText = copyBtn.textContent;
     copyBtn.textContent = "Copied!";
     copyBtn.classList.add("success");
@@ -110,7 +109,7 @@ copyBtn.addEventListener("click", () => {
 
 formatBtn.addEventListener("click", () => {
   try {
-    const formattedCode = prettier.format(codeInputValue, {
+    const formattedCode = prettier.format(codeInput.value, {
       parser: "babel",
       plugins: prettierPlugins,
       singleQuote: true,
