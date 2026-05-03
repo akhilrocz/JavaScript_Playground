@@ -1,7 +1,9 @@
 🚀 JS Playground
+
 A lightweight, browser-based JavaScript code runner and playground. This project allows you to execute JavaScript snippets in a controlled environment, capture console output, and measure execution performance in real-time.
 
 ✨ Features
+
 Sandboxed Execution: Uses a custom Function constructor to isolate code execution.
 
 Intercepted Console: Captures console.log, warn, and error calls and redirects them to a custom UI output.
@@ -13,6 +15,7 @@ Theme Switching: Support for Dark Mode (vs-dark) and Light Mode with persistence
 Object Formatting: Automatically "prettifies" objects and arrays using JSON serialization for better readability.
 
 🛠️ How It Works
+
 The core of the playground is the JSPlayground class. It overrides the default browser console by injecting a customConsole proxy into the executed function's scope.
 
 The Execution Flow:
@@ -25,6 +28,7 @@ Execution: The code runs, and all console calls are pushed to an internal logs a
 Rendering: The array is formatted into strings and displayed in the output terminal.
 
 🚀 Quick Start
+
 Clone the repository
 
 Bash
