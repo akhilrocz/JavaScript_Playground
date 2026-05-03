@@ -70,3 +70,15 @@ body {
     color: var(--text-color);
     border: 1px solid var(--border-color);
 }
+
+.fast{
+  color:limegreen;
+}
+
+.medium{
+  color:orange;
+}
+
+.slow{
+  color: red;
+}

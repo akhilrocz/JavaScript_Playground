@@ -46,7 +46,13 @@ class JSPlayground{
 
         const executionTime = (endTime-startTime).toFixed(2);
 
-        logs.push(`\n Execution Time: ${executionTime} ms`)
+        let timeClass ="fast";
+
+        if(executionTime>50) timeClass="medium";
+
+        if(executionTime>100) timeClass="slow";
+
+        logs.push(`<strong>Execution Time: <span class="${timeClass}">${executionTime} ms</span></strong>`)
 
         this.history.push({code,logs});
 
@@ -58,11 +64,11 @@ class JSPlayground{
     }
 
     render(logs){
-        this.outputElement.textContent = logs.join("\n");
+        this.outputElement.innerHTML = logs.join("<br>");
     }
 
     clear(){
-        this.outputElement.textContent="";
+        this.outputElement.innerHTML="";
     }
 }
 
