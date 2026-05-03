@@ -1,24 +1,31 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Code Playground</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="toggleDiv">
-<h1>⚡ JS Playground Engine</h1>
-<button id="themeToggle">🌗 Toggle Theme</button>
-</div>
-<textarea id="code-input" placeholder="Write your JavaScript code here..."></textarea>
-<div class="buttons">
-    <button id="run-btn">Run</button>
-    <button id="clear-btn">Clear</button>
-    <button id="copy-btn">Copy</button>
-</div>
-<h3>Output</h3>
-<pre id="output"></pre>
+      <h1>⚡ JS Playground Engine</h1>
+      <button id="themeToggle">🌗 Toggle Theme</button>
+      <button id="format-btn">✨ Format Code</button>
+    </div>
+    <textarea
+      id="code-input"
+      placeholder="Write your JavaScript code here..."
+    ></textarea>
+    <div class="buttons">
+      <button id="run-btn">Run</button>
+      <button id="clear-btn">Clear</button>
+      <button id="copy-btn">Copy</button>
+    </div>
+    <h3>Output</h3>
+    <pre id="output"></pre>
+
+    <script src="https://unpkg.com/prettier@2.8.8/standalone.js"></script>
+    <script src="https://unpkg.com/prettier@2.8.8/parser-babel.js"></script>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

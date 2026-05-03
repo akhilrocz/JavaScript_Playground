@@ -1,108 +1,128 @@
-let currentTheme = localStorage.getItem("theme")||"vs-dark";
-const toggleTheme =document.getElementById('themeToggle');
+let currentTheme = localStorage.getItem("theme") || "vs-dark";
+const toggleTheme = document.getElementById("themeToggle");
 
-const updateTheme =(theme)=>{
-    const mode =theme ==="vs-dark" ? "dark": "light";
+const updateTheme = (theme) => {
+  const mode = theme === "vs-dark" ? "dark" : "light";
 
-    document.documentElement.setAttribute("data-theme",mode);
+  document.documentElement.setAttribute("data-theme", mode);
 
-    toggleTheme.textContent = mode ==="dark" ? "🌞 Light Mode":"🌗 Dark Mode";
+  toggleTheme.textContent = mode === "dark" ? "🌞 Light Mode" : "🌗 Dark Mode";
 
-    localStorage.setItem("theme",theme);
-}
+  localStorage.setItem("theme", theme);
+};
 
 updateTheme(currentTheme);
 
+toggleTheme.addEventListener("click", () => {
+  currentTheme = currentTheme === "vs-dark" ? "light" : "vs-dark";
+  updateTheme(currentTheme);
+});
 
-toggleTheme.addEventListener("click",()=>{
-    currentTheme =currentTheme ==="vs-dark" ? "light":"vs-dark";
-    updateTheme(currentTheme);
-})
+class JSPlayground {
+  constructor(outputElement) {
+    this.outputElement = outputElement;
+    this.history = [];
+  }
 
-class JSPlayground{
-    constructor(outputElement){
-        this.outputElement=outputElement;
-        this.history=[];
+  run(code) {
+    const logs = [];
+    const startTime = performance.now();
+
+    const customConsole = {
+      log: (...args) => logs.push(this.format(args)),
+      error: (...args) => logs.push("❌ " + this.format(args)),
+      warn: (...args) => logs.push("⚠️" + this.format(args)),
+    };
+
+    try {
+      const fn = new Function("console", `"use strict";${code}`);
+      fn(customConsole);
+    } catch (error) {
+      logs.push("❌ Error: " + error.message);
     }
 
-    run(code){
-        const logs=[];
-        const startTime =performance.now();
+    const endTime = performance.now();
 
-        const customConsole ={
-            log:(...args)=>logs.push(this.format(args)),
-            error:(...args)=>logs.push("❌ "+this.format(args)),
-            warn:(...args)=>logs.push("⚠️"+this.format(args))
-        };
+    const executionTime = (endTime - startTime).toFixed(2);
 
-        try{
-            const fn =new Function("console",`"use strict";${code}`);
-            fn(customConsole);
-        } catch(error){
-            logs.push("❌ Error: " + error.message)
-        }
+    let timeClass = "fast";
 
-        const endTime =performance.now();
+    if (executionTime > 50) timeClass = "medium";
 
-        const executionTime = (endTime-startTime).toFixed(2);
+    if (executionTime > 100) timeClass = "slow";
 
-        let timeClass ="fast";
+    logs.push(
+      `<strong>Execution Time: <span class="${timeClass}">${executionTime} ms</span></strong>`,
+    );
 
-        if(executionTime>50) timeClass="medium";
+    this.history.push({ code, logs });
 
-        if(executionTime>100) timeClass="slow";
+    this.render(logs);
+  }
 
-        logs.push(`<strong>Execution Time: <span class="${timeClass}">${executionTime} ms</span></strong>`)
+  format(args) {
+    return args
+      .map((arg) =>
+        typeof arg === "object" ? JSON.stringify(arg, null, 2) : String(arg),
+      )
+      .join(" ");
+  }
 
-        this.history.push({code,logs});
+  render(logs) {
+    this.outputElement.innerHTML = logs.join("<br>");
+  }
 
-        this.render(logs);
-    }
-
-    format(args){
-        return args.map((arg)=>typeof arg==="object"?JSON.stringify(arg,null,2):String(arg)).join(" ");
-    }
-
-    render(logs){
-        this.outputElement.innerHTML = logs.join("<br>");
-    }
-
-    clear(){
-        this.outputElement.innerHTML="";
-    }
+  clear() {
+    this.outputElement.innerHTML = "";
+  }
 }
-
 
 const output = document.getElementById("output");
 const runBtn = document.getElementById("run-btn");
 const clearBtn = document.getElementById("clear-btn");
 const codeInput = document.getElementById("code-input");
 const copyBtn = document.getElementById("copy-btn");
+const formatBtn = document.getElementById("format-btn");
 
 const jsPlayground = new JSPlayground(output);
 
-runBtn.addEventListener("click",()=>{
-    jsPlayground.run(codeInput.value);
-})
+runBtn.addEventListener("click", () => {
+  jsPlayground.run(codeInput.value);
+});
 
-clearBtn.addEventListener("click",()=>{
-    jsPlayground.clear();
-})
+clearBtn.addEventListener("click", () => {
+  jsPlayground.clear();
+});
 
-copyBtn.addEventListener("click",()=>{
-    navigator.clipboard.writeText(codeInput.value).then(()=>{
-        const originalText = copyBtn.textContent;
-        copyBtn.textContent = "Copied!";
-        copyBtn.classList.add("success");
+copyBtn.addEventListener("click", () => {
+  navigator.clipboard.writeText(codeInput.value).then(() => {
+    const originalText = copyBtn.textContent;
+    copyBtn.textContent = "Copied!";
+    copyBtn.classList.add("success");
 
-        setTimeout(()=>{
-            copyBtn.textContent=originalText;
-            copyBtn.classList.remove("success");
-        },2000);
-    })
-})
+    setTimeout(() => {
+      copyBtn.textContent = originalText;
+      copyBtn.classList.remove("success");
+    }, 2000);
+  });
+});
 
-codeInput.value =`
+formatBtn.addEventListener("click", () => {
+  try {
+    const formattedCode = prettier.format(codeInput.value, {
+      parser: "babel",
+      plugins: prettierPlugins,
+      singleQuote: true,
+      semi: true,
+      tabWidth: 2,
+    });
+    codeInput.value = formattedCode;
+  } catch (error) {
+    alert("Error formatting code: " + error.message);
+  }
+});
+
+codeInput.value = `
 //Try writing JS Here
 const nums = [1, 2, 3];
 
