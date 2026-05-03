@@ -1,0 +1,72 @@
+body {
+  font-family: monospace;
+  background: #0f172a;
+  color: #e2e8f0;
+  text-align: center;
+}
+
+textarea {
+  width: 80%;
+  height: 200px;
+  margin: 10px;
+  background: #020617;
+  color: #38bdf8;
+  border: 1px solid #334155;
+  padding: 10px;
+}
+
+button {
+  margin: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+pre {
+  background: #020617;
+  padding: 15px;
+  width: 80%;
+  margin: auto;
+  text-align: left;
+  min-height: 150px;
+}
+
+.toggleDiv{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+@media (max-width:600px){
+  .toggleDiv{
+    flex-direction: column;
+  }
+}
+
+/* Default variables (Dark Mode) */
+:root {
+    --bg-color: #1e1e1e;
+    --text-color: #ffffff;
+    --input-bg: #2d2d2d;
+    --border-color: #444;
+}
+
+/* Light Mode Overrides */
+[data-theme="light"] {
+    --bg-color: #ffffff;
+    --text-color: #1e1e1e;
+    --input-bg: #f5f5f5;
+    --border-color: #ccc;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
+}
+
+#code-input, #output {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
