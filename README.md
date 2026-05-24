@@ -144,7 +144,8 @@ _Add screenshots or GIF demos here to make the repository more engaging._
 Example:
 
 ```md
-![Preview](./preview.png)
+![Preview](<img width="1240" height="569" alt="Js" src="https://github.com/user-attachments/assets/8a121d2d-4e16-4f67-b3b0-db1286b05f18" />
+)
 ```
 
 ---
