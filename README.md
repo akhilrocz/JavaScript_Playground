@@ -1,180 +1,106 @@
-# 🚀 JS Playground
+# ⚡ JS Playground PRO
 
-A fast, lightweight, and browser-based JavaScript playground built for experimenting with code in real time.  
-Run JavaScript snippets instantly, capture console output, inspect objects cleanly, and measure execution performance — all inside a minimal developer-friendly interface.
+An advanced, feature-rich in-browser JavaScript IDE, Sandbox, and Performance Benchmarking environment built for modern web developers.
 
----
-
-## ✨ Features
-
-### ⚡ Real-Time JavaScript Execution
-Execute JavaScript directly in the browser with zero setup or dependencies.
-
-### 🔒 Sandboxed Code Execution
-Uses the `Function` constructor to isolate user code execution from the main application environment.
-
-### 🖥️ Custom Console Interception
-Intercepts and displays:
-
-- `console.log()`
-- `console.warn()`
-- `console.error()`
-
-Outputs are redirected into a custom terminal-style UI for a smoother debugging experience.
-
-### 📊 Performance Monitoring
-Tracks execution speed using the **High Resolution Time API** (`performance.now()`), providing precise runtime measurements in milliseconds.
-
-### 🎨 Theme Switching
-Supports both:
-
-- 🌙 Dark Mode (`vs-dark`)
-- ☀️ Light Mode
-
-Theme preference is automatically saved using `localStorage`.
-
-### 🧩 Smart Object Formatting
-Objects and arrays are automatically formatted using JSON serialization for cleaner and more readable output.
-
-### 🚀 Zero Dependencies
-No frameworks. No build tools. No installation headaches.  
-Just open and run.
+Run modern JavaScript (ES2024+) with top-level await, inspect complex objects with interactive tree inspectors, test HTML/CSS in live sandboxed DOM preview, benchmark code performance side-by-side, import ESM modules directly from NPM, and share runnable snippets with compressed URLs.
 
 ---
 
-# 🛠️ How It Works
+## ✨ Features Overview
 
-The playground is powered by a custom `JSPlayground` class that creates a controlled execution environment for running JavaScript safely.
+### 🖥️ Monaco Editor Engine (VS Code in Browser)
+- Real VS Code editor core with full JavaScript/TypeScript IntelliSense and autocompletion.
+- Parameter hints, error squiggles, syntax diagnostics, code folding, and bracket pair colorization.
+- Multi-file tabs: `script.js`, `index.html`, and `styles.css`.
+- Prettier code formatter integration (`Shift + Alt + F`).
 
-Instead of using the browser’s native console directly, the application injects a custom console proxy into the execution scope.
+### ⚡ True Async Execution & Top-Level Await
+- Sandboxed async executor with seamless support for `async`/`await`, Promises, and top-level `await`.
+- Non-blocking execution of `fetch()`, timers, and Web APIs.
+- Real-time high-resolution execution timing (`performance.now()`) with millisecond precision.
 
-## Execution Flow
+### 🛠️ Chrome DevTools-Grade Console
+- **Interactive Object Inspector**: Click to expand/collapse nested objects, arrays, maps, sets, functions, and prototypes.
+- **Rich Console API**: Intercepts `console.log`, `info`, `warn`, `error`, `table`, `time`/`timeEnd`, `count`, `assert`, `dir`, and `group`.
+- **Interactive Sortable Tables**: Beautiful HTML tables generated from `console.table(data)`.
+- **Interactive REPL Prompt**: Execute ad-hoc expressions on-the-fly with command history (`Up`/`Down` arrow navigation).
+- **Log Filtering & Search**: Instant filter by log level (`All`, `Logs`, `Info`, `Warnings`, `Errors`, `Tables`) and search query.
 
-### 1️⃣ User Input
-Users write JavaScript code inside the editor textarea.
+### 🌐 Live Sandboxed Web / DOM Preview Mode
+- Full HTML5 + CSS3 + JS interactive canvas and UI component testing in a sandboxed `<iframe>`.
+- Live console bridge piping errors and logs inside the iframe back to the unified playground console.
 
-### 2️⃣ Context Injection
+### 🧪 Performance Benchmarking Comparison Suite
+- Compare two candidate implementations side-by-side (e.g. `Array.map` vs `for` loop vs `reduce`).
+- Configurable iterations (500 to 10,000 runs) with automatic warmup cycles.
+- Operations/second (Hz) calculation, speedup percentage verdict (e.g. "Candidate B is 142% faster"), and comparative bar chart.
 
-```js
-new Function("console", code)
-```
+### 📦 Dynamic NPM Module ESM Imports
+- Import any NPM package on the fly using standard dynamic ESM imports (e.g. `import _ from 'https://esm.sh/lodash-es'`).
 
-A custom console object is passed into the function scope.
+### 💾 Snippet Manager & Curated Templates Library
+- **Curated Templates**:
+  - 🌀 *Async & Fetch API (GitHub API fetch, Promise.allSettled)*
+  - ⚡ *Modern ES2024 Features (Object.groupBy, Promise.withResolvers, structuredClone)*
+  - 🎨 *Canvas Particle System (Interactive physics particles in DOM preview)*
+  - 📦 *NPM ESM Modules (Lodash & Canvas-Confetti via esm.sh)*
+  - 🌳 *Data Structures & Algorithms (Binary Search Tree with traversal)*
+  - 💡 *Reactive Signals & State (Fine-grained reactivity from scratch)*
+  - 🧪 *Loop Benchmark Suite*
+- **Saved Snippets**: Save snippets to `localStorage`, search, preview, load, delete, or export/import JSON backup files.
 
-### 3️⃣ Secure Execution
-The code executes in isolation while console methods are intercepted internally.
+### 🔗 Compressed Shareable URLs & Exports
+- URL hash compression using `LZ-String` (`#code=...`) to share exact runnable snippets via URL link.
+- Export snippet as `.js` file or copy as formatted Markdown.
 
-### 4️⃣ Log Capture
-All console calls are pushed into a structured logs array.
-
-### 5️⃣ Output Rendering
-Logs are formatted and displayed inside the custom output terminal.
+### 🎨 Pro Themes & Glassmorphism Design System
+- 5 curated developer themes:
+  - 🌙 **VS Code Dark**
+  - ☀️ **GitHub Light**
+  - 🟣 **Dracula**
+  - 🌌 **Cyberpunk Neon**
+  - ❄️ **Nord Frost**
+- Draggable resizable split panes with persistent split layout.
+- Command Palette (`Ctrl + K` / `Cmd + K`) for rapid access to all tools and templates.
 
 ---
 
-# 🚀 Quick Start
+## ⌨️ Keyboard Shortcuts
 
-## Clone the Repository
-
-```bash
-git clone https://github.com/your-username/js-playground.git
-```
-
-## Open the Project
-
-Simply open `index.html` in any modern browser.
-
-No installation, dependencies, or build process required.
+| Shortcut | Action |
+| :--- | :--- |
+| **`Ctrl + Enter`** / **`Cmd + Enter`** | Run Code / Execute Mode |
+| **`Shift + Alt + F`** | Format Code with Prettier |
+| **`Ctrl + L`** | Clear Console Output |
+| **`Ctrl + K`** / **`Cmd + K`** | Open Command Palette |
+| **`Ctrl + S`** / **`Cmd + S`** | Open Snippet Library / Save Snippet |
+| **`Esc`** | Close Open Modals / Dropdowns |
+| **`Up / Down Arrow`** (in REPL) | Navigate REPL Command History |
 
 ---
 
-# 📂 Project Structure
+## 📂 Project Structure
 
 ```plaintext
-├── index.html   # Main UI layout
-├── style.css    # Styling, themes, and responsive design
-└── script.js    # JSPlayground core logic and DOM handling
+├── index.html   # Main layout, Monaco container, DevTools console, DOM preview, modals
+├── styles.css   # Modern design system, 5 themes, split resizer, object inspector styles
+├── script.js    # Core engine: Monaco loader, async sandbox, REPL, benchmarking, templates
+└── README.md    # Documentation and usage guide
 ```
 
 ---
 
-# 🖥️ Example Usage
+## 🚀 Quick Start
 
-```js
-const user = {
-  id: 1,
-  name: "Gemini",
-  roles: ["Admin", "Developer"]
-};
-
-console.log("User Data:", user);
-
-const start = performance.now();
-
-// Simulated logic
-for (let i = 0; i < 1000000; i++) {}
-
-console.warn("System check complete.");
-
-const end = performance.now();
-
-console.log(`Execution Time: ${(end - start).toFixed(2)}ms`);
-```
+1. Open `index.html` directly in any modern browser (Chrome, Edge, Firefox, Safari).
+2. Or serve locally with any static file server:
+   ```bash
+   npx serve .
+   ```
+3. No build step or bundler needed.
 
 ---
 
-# 🌟 Why This Project?
+## 📄 License
 
-JS Playground was built to provide a simple and focused environment for:
-
-- Practicing JavaScript
-- Testing snippets quickly
-- Learning console behavior
-- Understanding execution timing
-- Experimenting without setup friction
-
-It’s ideal for beginners, frontend developers, and anyone who wants a lightweight in-browser coding sandbox.
-
----
-
-# 📸 Preview
-
-<img width="1240" height="569" alt="Js" src="https://github.com/user-attachments/assets/8a121d2d-4e16-4f67-b3b0-db1286b05f18" />
-
----
-
-# 🔮 Future Improvements
-
-- Code editor syntax highlighting
-- Multi-tab support
-- Local snippet storage
-- Shareable playground links
-- Async/await execution handling
-- Console history
-- Error stack tracing
-- Mobile responsive improvements
-
----
-
-# 🤝 Contributing
-
-Contributions, suggestions, and improvements are welcome.
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Open a Pull Request
-
----
-
-# 📄 License
-
-This project is licensed under the **MIT License**.
-
-Feel free to use, modify, and distribute it for personal or commercial projects.
-
----
-
-# ⭐ Support
-
-If you found this project useful, consider giving it a **star** on GitHub — it helps increase visibility and supports the project.
+MIT License. Free to use, modify, and distribute for personal or commercial projects.

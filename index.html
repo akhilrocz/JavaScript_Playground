@@ -1,31 +1,181 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Code Playground</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="toggleDiv">
-      <h1>⚡ JS Playground Engine</h1>
-      <button id="themeToggle">🌗 Toggle Theme</button>
-      <button id="format-btn">✨ Format Code</button>
-    </div>
-    <textarea
-      id="code-input"
-      placeholder="Write your JavaScript code here..."
-    ></textarea>
-    <div class="buttons">
-      <button id="run-btn">Run</button>
-      <button id="clear-btn">Clear</button>
-      <button id="copy-btn">Copy</button>
-    </div>
-    <h3>Output</h3>
-    <pre id="output"></pre>
+<!DOCTYPE html>
+<html lang="en" data-theme="vs-dark">
 
-    <script src="https://unpkg.com/prettier@2.8.8/standalone.js"></script>
-    <script src="https://unpkg.com/prettier@2.8.8/parser-babel.js"></script>
-    <script src="script.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JS Playground PRO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettier/3.2.5/standalone.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettier/3.2.5/plugins/babel.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettier/3.2.5/plugins/estree.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+</head>
+
+<body>
+  <div id="app" class="app-container">
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo">⚡ JS Playground <span class="badge-pro">PRO</span></div>
+        <div class="mode-selector" id="modeSelector">
+          <button class="mode-btn active" data-mode="js">JS Console</button>
+          <button class="mode-btn" data-mode="dom">Live DOM</button>
+        </div>
+        <div class="dropdown-wrapper">
+          <button class="header-btn" id="templatesBtn">📚 Templates ▾</button>
+          <div class="dropdown-menu" id="templatesMenu">
+            <div class="dropdown-header">Curated Examples</div>
+            <button class="dropdown-item" data-template="async-fetch">🌀 Async & Fetch API</button>
+            <button class="dropdown-item" data-template="modern-es">⚡ Modern ES2024</button>
+            <button class="dropdown-item" data-template="canvas-particles">🎨 Canvas Particles</button>
+            <button class="dropdown-item" data-template="npm-esm">📦 NPM ESM (Lodash)</button>
+            <button class="dropdown-item" data-template="algorithms">🌳 Binary Search Tree</button>
+            <button class="dropdown-item" data-template="reactive-signals">💡 Reactive Signals</button>
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="header-btn btn-primary" id="runBtn">▶ Run <kbd class="shortcut-badge">Ctrl+↵</kbd></button>
+        <button class="header-btn" id="formatBtn">✨ Format</button>
+        <button class="header-btn" id="clearOutputBtn">🧹 Clear</button>
+        <button class="header-btn" id="shareBtn">🔗 Share</button>
+        <div class="divider-v"></div>
+        <div class="dropdown-wrapper">
+          <button class="header-btn icon-btn" id="themeBtn" title="Theme">🎨</button>
+          <div class="dropdown-menu dropdown-right" id="themeMenu">
+            <div class="dropdown-header">Themes</div>
+            <button class="dropdown-item theme-option active" data-theme="vs-dark">VS Code Dark</button>
+            <button class="dropdown-item theme-option" data-theme="dracula">Dracula</button>
+            <button class="dropdown-item theme-option" data-theme="cyberpunk">Cyberpunk Neon</button>
+            <button class="dropdown-item theme-option" data-theme="nord">Nord Frost</button>
+            <button class="dropdown-item theme-option" data-theme="github-light">GitHub Light</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="workspace" id="workspace">
+      <section class="pane pane-editor" id="editorPane">
+        <div class="pane-header">
+          <div class="editor-tabs" id="editorTabs">
+            <button class="editor-tab active" data-file="js">
+              <span class="file-icon js-icon">JS</span>
+              script.js
+            </button>
+          
+            <button class="editor-tab dom-tab hidden" data-file="html">
+              <span class="file-icon html-icon">&lt;&gt;</span>
+              index.html
+            </button>
+          
+            <button class="editor-tab dom-tab hidden" data-file="css">
+              <span class="file-icon css-icon">CSS</span>
+              styles.css
+            </button>
+          </div>
+          <div class="editor-tools">
+            <button class="tool-btn" id="copyCodeBtn" title="Copy Code">📋</button>
+          </div>
+        </div>
+        <div class="editor-container">
+          <div id="monaco-editor"></div>
+          <textarea id="fallback-editor" class="fallback-textarea hidden" spellcheck="false"></textarea>
+        </div>
+      </section>
+
+      <div class="resizer-gutter" id="resizerGutter">
+        <div class="gutter-handle"></div>
+      </div>
+
+      <section class="pane pane-output" id="outputPane">
+        <div class="pane-header">
+          <div class="output-tabs" id="outputTabs">
+            <button class="output-tab active" data-tab="console">🖥️ Console <span class="tab-badge"
+                id="logCountBadge">0</span></button>
+            <button class="output-tab" data-tab="preview" id="previewTabBtn">🌐 Live DOM</button>
+          </div>
+          <div class="output-tools" id="consoleTools">
+            <button class="tool-btn" id="clearConsoleBtn" title="Clear Logs">🧹</button>
+          </div>
+          <div class="output-tools hidden" id="previewTools">
+            <button class="tool-btn" id="refreshPreviewBtn" title="Refresh">🔄</button>
+          </div>
+        </div>
+
+        <div class="output-views-container">
+          <div class="output-view active" id="consoleView">
+            <div class="console-logs-container" id="consoleLogs"></div>
+            <form class="console-repl" id="replForm">
+              <span class="repl-prompt">&gt;</span>
+              <input type="text" id="replInput" placeholder="Evaluate JS expression..." autocomplete="off" />
+              <button type="submit" class="repl-submit-btn">↵</button>
+            </form>
+          </div>
+
+          <div class="output-view" id="previewView">
+            <iframe id="previewIframe" sandbox="allow-scripts allow-modals allow-same-origin"
+              title="Live Preview"></iframe>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-statusbar">
+      <div class="status-left">
+        <span class="status-item" id="statusIndicator"><span class="status-dot dot-ready"></span> <span
+            id="statusText">Ready</span></span>
+        <span class="status-divider">|</span>
+        <span class="status-item">⏱️ <span id="execTimeValue">0.00 ms</span></span>
+      </div>
+      <div class="status-right">
+        <span class="status-item" id="statusCursor">Ln 1, Col 1</span>
+        <span class="status-divider">|</span>
+        <button class="status-btn" id="shortcutsTriggerBtn">⌨️ Shortcuts</button>
+      </div>
+    </footer>
+
+    <div class="modal-backdrop hidden" id="shareModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title">🔗 Share Code</div><button class="modal-close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="shareUrlInput" readonly style="flex:1;" />
+            <button class="header-btn btn-primary" id="copyShareUrlBtn">Copy</button>
+          </div>
+          <div style="margin-top:12px;">
+            <button class="header-btn" id="exportJsFileBtn">📄 Download .js</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop hidden" id="shortcutsModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title">⌨️ Shortcuts</div><button class="modal-close-btn">&times;</button>
+        </div>
+        <div class="modal-body shortcuts-list">
+          <div class="shortcut-row"><span>Run Code</span><kbd>Ctrl + Enter</kbd></div>
+          <div class="shortcut-row"><span>Format</span><kbd>Shift + Alt + F</kbd></div>
+          <div class="shortcut-row"><span>Command Palette</span><kbd>Ctrl + K</kbd></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+  <script src="templates.js"></script>
+  <script src="script.js"></script>
+</body>
+
 </html>
